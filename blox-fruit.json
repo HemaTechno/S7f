@@ -1,0 +1,14 @@
+[
+    {
+        "id": "1",
+        "title": "Script 1",
+        "description": "This is the description for Script 1.",
+        "scriptText": "print('Hello from Script 1')"
+    },
+    {
+        "id": "2",
+        "title": "Script 2",
+        "description": "This is the description for Script 2.",
+        "scriptText": "print('Hello from Script 2')"
+    }
+]
