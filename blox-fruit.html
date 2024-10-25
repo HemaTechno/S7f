@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scripts Viewer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            height: 100%;
+            font-family: 'Cairo', sans-serif;
+            background-color: #f0f4ff; /* خلفية زرقاء فاتحة */
+            color: #333; /* لون النص الأساسي */
+            direction: rtl;
+            text-align: right;
+        }
+
+        /* تنسيق عرض السكربتات */
+        #scriptsContainer {
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 600px;
+        }
+        .script-card {
+            background-color: #ffffff; /* خلفية بيضاء */
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #a1c4ff; /* حدود زرقاء فاتحة */
+        }
+
+        .script-card h3 {
+            color: #3366cc; /* لون أزرق للنص */
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .script-card p {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .script-frame {
+            border: 1px solid #a1c4ff;
+            border-radius: 10px;
+            padding: 10px;
+            background-color: #e8f0ff; /* خلفية زرقاء فاتحة للإطار */
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: #333;
+            margin: 0;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        button {
+            background-color: #3366cc; /* زر أزرق */
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 5px;
+            flex: 1;
+            margin: 0 5px;
+        }
+        button:hover {
+            background-color: #254d99;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="scriptsContainer"></div>
+
+    <script>
+        // دالة تحميل السكربتات من JSON
+        async function loadScriptsFromJSON() {
+            const scriptsContainer = document.getElementById('scriptsContainer');
+            scriptsContainer.innerHTML = '';
+
+            try {
+                const response = await fetch('blox-fruit.json');
+                const scripts = await response.json();
+
+                scripts.forEach(data => {
+                    const scriptDiv = document.createElement('div');
+                    scriptDiv.className = 'script-card';
+                    scriptDiv.innerHTML = `
+                        <h3>${data.title}</h3>
+                        <p>${data.description}</p>
+                        <div class="script-frame" onclick="copyScriptText('${data.scriptText}')">
+                            <pre>${data.scriptText}</pre>
+                        </div>
+                        <div class="button-container">
+                            <button onclick="shareLink('${data.id}')">مشاركة</button>
+                        </div>
+                    `;
+                    scriptsContainer.appendChild(scriptDiv);
+                });
+            } catch (error) {
+                console.error('خطأ في تحميل البيانات:', error);
+            }
+        }
+
+        // دالة نسخ النص عند الضغط على الإطار
+        function copyScriptText(scriptText) {
+            navigator.clipboard.writeText(scriptText).then(() => {
+                alert("تم نسخ النص داخل الإطار!");
+            }).catch(err => {
+                console.error('خطأ في النسخ:', err);
+            });
+        }
+
+        // دالة مشاركة الرابط
+        function shareLink(id) {
+            const link = `https://h-scripts.site/public-scripts?id=${id}`;
+            navigator.clipboard.writeText(link).then(() => {
+                alert("تم نسخ الرابط للمشاركة!");
+            }).catch(err => {
+                console.error('خطأ في النسخ:', err);
+            });
+        }
+
+        // تحميل السكربتات عند تحميل الصفحة
+        window.onload = loadScriptsFromJSON;
+    </script>
+</body>
+</html>
