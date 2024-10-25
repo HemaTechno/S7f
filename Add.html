@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .input-group textarea {
+            resize: vertical;
+            height: 80px;
+        }
+        .button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #3366cc;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .button:hover {
+            background-color: #254d99;
+        }
+        .json-output {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f0f4ff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-align: left;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>JSON Generator</h1>
+
+        <div id="inputsContainer">
+            <!-- الحقول سيتم إنشاؤها هنا ديناميكياً -->
+        </div>
+
+        <button class="button" onclick="addInputGroup()">إضافة سكربت جديد</button>
+        <button class="button" onclick="generateJSON()">توليد JSON</button>
+        <button class="button" onclick="copyJSON()">نسخ JSON</button>
+
+        <div id="jsonOutput" class="json-output" contenteditable="true">سيتم عرض JSON هنا...</div>
+    </div>
+
+    <script>
+        let scriptCount = 0; // عداد لعدد السكربتات
+
+        function addInputGroup() {
+            const inputsContainer = document.getElementById('inputsContainer');
+
+            const div = document.createElement('div');
+            div.className = 'input-group';
+            div.id = `script_${scriptCount}`;
+
+            div.innerHTML = `
+                <label>Script ID</label>
+                <input type="text" placeholder="Enter ID" id="id_${scriptCount}">
+                <label>Title</label>
+                <input type="text" placeholder="Enter Title" id="title_${scriptCount}">
+                <label>Description</label>
+                <textarea placeholder="Enter Description" id="description_${scriptCount}"></textarea>
+                <label>Script Text</label>
+                <textarea placeholder="Enter Script Text" id="scriptText_${scriptCount}"></textarea>
+            `;
+
+            inputsContainer.appendChild(div);
+            scriptCount++;
+        }
+
+        function generateJSON() {
+            const scriptsArray = [];
+
+            for (let i = 0; i < scriptCount; i++) {
+                const id = document.getElementById(`id_${i}`).value;
+                const title = document.getElementById(`title_${i}`).value;
+                const description = document.getElementById(`description_${i}`).value;
+                const scriptText = document.getElementById(`scriptText_${i}`).value;
+
+                if (id && title && description && scriptText) {
+                    scriptsArray.push({
+                        id: id,
+                        title: title,
+                        description: description,
+                        scriptText: scriptText
+                    });
+                }
+            }
+
+            const jsonOutput = JSON.stringify(scriptsArray, null, 4);
+            document.getElementById('jsonOutput').textContent = jsonOutput;
+        }
+
+        function copyJSON() {
+            const jsonOutput = document.getElementById('jsonOutput').textContent;
+
+            navigator.clipboard.writeText(jsonOutput).then(() => {
+                alert("تم نسخ JSON!");
+            }).catch(err => {
+                console.error('خطأ في النسخ:', err);
+            });
+        }
+    </script>
+
+</body>
+</html>
