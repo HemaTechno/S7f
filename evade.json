@@ -1,14 +1,8 @@
 [
     {
         "id": "1",
-        "title": "انفنتي",
-        "description": "اي شي",
-        "scriptText": "loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()"
-    },
-    {
-        "id": "2",
-        "title": "هيكس",
-        "description": "لا شي",
-        "scriptText": "loadstring(game:HttpGet('https://raw.githubusercontent.com/BloodyBurns/Hex/main/Iv%20Admin%20v3.lua'))()"
+        "title": "Unknown hub",
+        "description": "فيه كل شي في ماب",
+        "scriptText": "loadstring(game:HttpGet('https://raw.githubusercontent.com/Unknownproooolucky/Unknown-Hub-X-Universal-Games/main/Games/Evade'))()"
     }
 ]
